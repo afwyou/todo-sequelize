@@ -28,6 +28,13 @@ app.get('/', (req, res) => {
   res.send('hello world')
 })
 
+app.get('/todos/:id', (req, res) => {
+  const id = req.params.id//製作版面的按鈕連結就會帶著ID
+  return Todo.findByPk(id)
+    .then(todo => res.render('detail', { todo: todo.toJSON() }))
+    .catch(error => console.log(error))
+})
+
 app.get('/users/login', (req, res) => {
   res.render('login')
 })
