@@ -6,8 +6,11 @@ const Todo = db.Todo//資料庫設定的表格名稱是Todo，但在資料庫會
 // const User = db.User
 
 router.get('/:id', (req, res) => {
+  const UserId = req.user.id
   const id = req.params.id//製作版面的按鈕連結就會帶著ID
-  return Todo.findByPk(id)
+  return Todo.findOne({
+    where: { id, UserId }
+  })
     .then(todo => res.render('detail', { todo: todo.toJSON() }))
     .catch(error => console.log(error))
 })
