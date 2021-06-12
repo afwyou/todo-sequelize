@@ -3,6 +3,10 @@ const session = require('express-session')
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 const usePassport = require('./config/passport')//載入一包 Passport 設定檔
 const routes = require('./routes')
 const flash = require('connect-flash')
