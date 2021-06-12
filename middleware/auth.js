@@ -13,6 +13,7 @@ module.exports = {//物件裡面有一個函式屬性
     if (req.isAuthenticated()) {
       return next()
     }
+    req.flash('warning_msg', '請先登入才能使用！')
     res.redirect('/users/login')
   }
 }
