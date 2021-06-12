@@ -60,5 +60,17 @@ router.put('/:id', (req, res) => {
     .catch(error => console.log(error))
 })
 
+//刪除todo
+router.delete('/:id', (req, res) => {
+  const UserId = req.user.id
+  const id = req.params.id
+
+  return Todo.findOne({ where: { id, UserId } })
+    //刪除todo語法為destroy
+    .then(todo => todo.destroy())
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+})
+
 
 module.exports = router
