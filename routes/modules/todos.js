@@ -30,4 +30,35 @@ router.get('/:id', (req, res) => {
     .catch(error => console.log(error))
 })
 
+//修改todo
+router.get('/:id/edit', (req, res) => {
+  const UserId = req.user.id
+  const id = req.params.id
+
+  return Todo.findOne({ where: { id, UserId } })
+    .then(todo => res.render('edit', { todo: todo.get() }))
+    .catch(error => console.log(error))
+})
+
+router.put('/:id', (req, res) => {
+  const UserId = req.user.id//從passport取得
+  const id = req.params.id//從request網址取得
+  const { name, isDone } = req.body//從表單填入取得
+  console.log(req.body)
+  //找出符合條件的todo
+  return Todo.findOne({ where: { id, UserId } })
+    .then(todo => {
+      //將todo的值更新
+      todo.name = name
+      todo.isDone = isDone === 'on'//如果checkbox有打勾，req.body回傳的物件屬性isDone的值為'on' 例如：{ isDone: 'on', name: '買菜' }
+      //透過邏輯運算子將布林值存入todo.isDone(資料庫的todo schema預設為false(0))
+
+      //儲存入資料庫
+      return todo.save()
+    })
+    .then(() => res.redirect(`/todos/${id}`))
+    .catch(error => console.log(error))
+})
+
+
 module.exports = router
